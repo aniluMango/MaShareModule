@@ -1,48 +1,47 @@
 package com.ms.masharemodule
 
-import com.ms.masharemodule.model.GiftCardDataResponse
-import com.ms.masharemodule.model.GiftCardResponse
-import com.ms.masharemodule.model.MsResponse
+import com.ms.masharemodule.model.*
+import com.ms.masharemodule.model.Error
 import io.ktor.client.call.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
 import io.ktor.http.*
 
-class GiftCardsRepo(private val configuration: DomainConfiguration) :BaseRepo(configuration){
-    suspend fun getGiftCards(): GiftCardDataResponse {
-        return try {
-           val url = configuration.baseURl + "v2/recognitions/tango_gift_cards.json"
-            println("------------------------------------ $url ")
-            val get = client.get(url)
-            println("------------------------------------ ${get.bodyAsText()} ")
-            println("------------------------------------ ${get.status} ")
-            val response:GiftCardResponse = get.body()
-            if (get.status == HttpStatusCode.OK) {
-                GiftCardDataResponse(
-                    response.ms_response.tango_cards.brand_info,
-                    false,
-                    get.status.value,
-                    ""
-                )
-            }else{
-                GiftCardDataResponse(
-                    null,
-                    false,
-                    get.status.value,
-                    "Server Error"
-                )
-            }
+class GiftCardsRepo(private val configuration: DomainConfiguration) : BaseRepo(configuration) {
 
-        }catch (e:Exception){
+
+    suspend fun getGiftCards():GiftCardResponse {
+        return try {
+            val url = configuration.baseURl + "v2/recognitions/tango_gift_cards.json"
+            val get = client.get(url)
+            get.body()
+        } catch (e: Exception) {
             e.printStackTrace()
-            GiftCardDataResponse(
-                null,
-                false,
-                400,
-                e.message?:"Server Error"
+            GiftCardResponse(
+                ms_errors = MsErrors(Error("Internal server error"), false)
             )
         }
     }
+
+    suspend fun redeemGiftCard(redeemAmt: String,
+                               utid: String,
+                               giftCardLogo:String,
+                               giftCardName:String
+    ): PostRedemptionResponse {
+        return try {
+            val url = configuration.baseURl + "v2/recognitions/tango_card_order.json"
+            val redeemGiftReq = RedeemReqModel(MsRequest(amount = redeemAmt,utid = utid, gift_card_logo = giftCardLogo, gift_card_name = giftCardName))
+            val get = client.post(url) {
+                contentType(ContentType.Application.Json)
+                setBody(redeemGiftReq)
+            }
+            get.body() as PostRedemptionResponse
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            PostRedemptionResponse(ms_errors = MsErrors(Error("Internal server error"), false))
+        }
+    }
+
 }
 
 

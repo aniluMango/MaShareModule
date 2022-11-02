@@ -1,18 +1,25 @@
 package com.ms.masharemodule.model
 
-import kotlinx.serialization.Serializable
-
-@Serializable
+@kotlinx.serialization.Serializable
 data class RedeemCatlogModel(
     val brand_key: String,
     val brand_name: String,
-    val denominations: String,
     val description: String,
     val image_urls: ImageUrls,
     val terms: String?,
-    val utid: String?
+    val uti_items: List<UtiItem?>? = arrayListOf(),
+    val value_type: String
 )
-@Serializable
+@kotlinx.serialization.Serializable
+
+data class UtiItem(
+    val amount: String,
+    val redemption_instructions: String,
+    val reward_name: String,
+    val utid: String
+)
+
+@kotlinx.serialization.Serializable
 data class ImageUrls(
     val i1200w_326ppi: String,
     val i130w_326ppi: String,
@@ -22,19 +29,29 @@ data class ImageUrls(
     val i80w_326ppi: String
 )
 
-@Serializable
+@kotlinx.serialization.Serializable
 data class MsResponse(
-    val tango_cards: TangoCards
+    val tango_cards: TangoCards?=null,
+    val message: String? = null,
+    val success: Boolean? = false
 )
-@Serializable
+
+@kotlinx.serialization.Serializable
 data class GiftCardResponse(
-    val ms_response: MsResponse
+    val ms_response: MsResponse?=null,
+    val ms_errors: MsErrors?=null
+
 )
-@Serializable
+
+@kotlinx.serialization.Serializable
 data class TangoCards(
     val available_points: String,
     val brand_info: List<RedeemCatlogModel>
 )
-@Serializable
-data class GiftCardDataResponse(val data:List<RedeemCatlogModel>?, val isError:Boolean,
-                                val code :Int, val message:String)
+
+
+@kotlinx.serialization.Serializable
+data class RedeemGiftReq(
+    val amount: String,
+    val utid: String
+)
