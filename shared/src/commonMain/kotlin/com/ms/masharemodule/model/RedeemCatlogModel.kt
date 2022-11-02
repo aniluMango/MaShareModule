@@ -7,7 +7,7 @@ data class RedeemCatlogModel(
     val description: String,
     val image_urls: ImageUrls,
     val terms: String?,
-    val uti_items: List<UtiItem?>? = arrayListOf(),
+    val uti_items: List<UtiItem> = arrayListOf(),
     val value_type: String
 )
 @kotlinx.serialization.Serializable
