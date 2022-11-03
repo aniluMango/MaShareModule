@@ -1,7 +1,7 @@
 package com.ms.masharemodule.cache
 
-import com.ms.masharemodule.model.RedeemCatlogModel
+import com.ms.masharemodule.model.TangoCards
 
 object ShareCache {
-    val giftCatalogList = arrayListOf<RedeemCatlogModel>()
+    var tangoCards : TangoCards?=null
 }

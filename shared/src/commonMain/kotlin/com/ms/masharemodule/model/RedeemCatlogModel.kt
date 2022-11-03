@@ -29,12 +29,7 @@ data class ImageUrls(
     val i80w_326ppi: String
 )
 
-@kotlinx.serialization.Serializable
-data class MsResponse(
-    val tango_cards: TangoCards?=null,
-    val message: String? = null,
-    val success: Boolean? = false
-)
+
 
 @kotlinx.serialization.Serializable
 data class GiftCardResponse(
