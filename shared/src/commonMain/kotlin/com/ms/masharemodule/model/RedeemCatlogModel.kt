@@ -41,12 +41,7 @@ data class GiftCardResponse(
 @kotlinx.serialization.Serializable
 data class TangoCards(
     val available_points: String,
+    val unit:Int,
     val brand_info: List<RedeemCatlogModel>
 )
 
-
-@kotlinx.serialization.Serializable
-data class RedeemGiftReq(
-    val amount: String,
-    val utid: String
-)
