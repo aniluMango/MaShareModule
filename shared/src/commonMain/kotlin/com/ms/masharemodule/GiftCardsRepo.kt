@@ -45,9 +45,9 @@ class GiftCardsRepo(private val configuration: DomainConfiguration) : BaseRepo(c
         }
     }
 
-    suspend fun getGiftCardHistory():GiftCardHistoryResponse {
+    suspend fun getGiftCardHistory(limit:Int,page:Int):GiftCardHistoryResponse {
         return try {
-            val url = configuration.baseURl + "v2/recognitions/redemption_history.json"
+            val url = configuration.baseURl + "v2/recognitions/redemption_history.json?&limit=${limit}&offset=${page}"
             val get = client.get(url)
             get.body()
         } catch (e: Exception) {

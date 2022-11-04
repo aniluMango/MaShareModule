@@ -9,7 +9,7 @@ import kotlin.test.assertTrue
 @OptIn(ExperimentalCoroutinesApi::class)
 class SampleTests {
     private val domain = "lms1.mangopulse.com"// "lms1.mangopulse.com"
-    private val cookies = "_felix_session_id=24772b62cc0004216ea4f76157cec9fa"
+    private val cookies = "_felix_session_id=6956405a81333ebebf7b204214463c26"
     private val repo = GiftCardsRepo(
         DomainConfiguration(
             "https://$domain/api/",
@@ -28,7 +28,7 @@ class SampleTests {
     @Test
     fun postRedemption() = runTest {
         launch {
-           val response =  repo.redeemGiftCard("1","U903652","https://dwwvg90koz96l.cloudfront.net/images/brands/b157294-1200w-326ppi.png","American Cancer Society Donation")
+           val response =  repo.redeemGiftCard("5","U903652","https://dwwvg90koz96l.cloudfront.net/images/brands/b157294-1200w-326ppi.png","American Cancer Society Donation")
             response.ms_errors?.apply {
                 println(response.ms_errors!!.error.message)
                 println(response.ms_errors!!.success)
@@ -43,7 +43,7 @@ class SampleTests {
 
     @Test
     fun getGiftCardHistory() = runTest {
-        launch { assertTrue { repo.getGiftCardHistory().ms_response!!.redemption_history.isNotEmpty() }}
+        launch { assertTrue { repo.getGiftCardHistory(10,1).ms_response!!.redemption_history.size == 10 }}
     }
 
     @Test
