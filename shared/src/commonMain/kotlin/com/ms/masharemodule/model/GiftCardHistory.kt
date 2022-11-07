@@ -9,6 +9,8 @@ val id: Int,
 val points_used: String?=null,
 val reference_order_id: String,
 val status: String,
-val unit: String?=null
+val unit: String?=null,
+val redeemed_by: String?=null,
+
 )
 

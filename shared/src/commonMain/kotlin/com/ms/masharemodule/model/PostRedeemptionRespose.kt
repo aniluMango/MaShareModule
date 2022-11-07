@@ -1,4 +1,7 @@
 package com.ms.masharemodule.model
+
+import kotlinx.serialization.SerialName
+
 @kotlinx.serialization.Serializable
 data class MsRequest(
     val amount: String,
@@ -14,7 +17,15 @@ data class RedeemReqModel(
 
 @kotlinx.serialization.Serializable
 data class PostRedemptionResponse(
-    val ms_response: MsResponse?=null,
+    @SerialName("ms_response")
+    val ms_response: PostRedemptionResponseMS?=null,
     val ms_errors: MsErrors?=null
 )
 
+
+@kotlinx.serialization.Serializable
+data class PostRedemptionResponseMS(
+    val message: String? = null,
+    val available_reward_points: String? = null,
+    val success: Boolean? = false,
+)

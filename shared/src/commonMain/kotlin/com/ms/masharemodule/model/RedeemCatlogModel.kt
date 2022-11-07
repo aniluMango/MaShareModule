@@ -1,7 +1,9 @@
 package com.ms.masharemodule.model
 
+import kotlinx.serialization.SerialName
+
 @kotlinx.serialization.Serializable
-data class RedeemCatlogModel(
+data class RedeemCatalogModel(
     val brand_key: String,
     val brand_name: String,
     val description: String,
@@ -30,18 +32,23 @@ data class ImageUrls(
 )
 
 
-
 @kotlinx.serialization.Serializable
-data class GiftCardResponse(
-    val ms_response: MsResponse?=null,
-    val ms_errors: MsErrors?=null
-
+data class TangoCard(
+    val tango_cards: TangoCards?=null,
 )
+
 
 @kotlinx.serialization.Serializable
 data class TangoCards(
     val available_points: String,
     val unit:Int,
-    val brand_info: List<RedeemCatlogModel>
+    val brand_info: List<RedeemCatalogModel>
 )
 
+@kotlinx.serialization.Serializable
+data class GiftCardResponse(
+    @SerialName("ms_response")
+    val ms_response: TangoCard?=null,
+    val ms_errors: MsErrors?=null
+
+)
