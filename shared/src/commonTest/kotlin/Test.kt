@@ -43,7 +43,13 @@ class SampleTests {
 
     @Test
     fun getGiftCardHistory() = runTest {
-        launch { assertTrue { repo.getGiftCardHistory(10,1).ms_response!!.redemption_history.size == 10 }}
+        val msResponse = repo.getGiftCardHistory(10, 1, "desc").ms_response!!  //desc/asc
+        launch {
+            assertTrue { msResponse.redemption_history.size == 10 }
+            msResponse.redemption_history.forEach {
+                println(it.created_at)
+            }
+        }
     }
 
     @Test
