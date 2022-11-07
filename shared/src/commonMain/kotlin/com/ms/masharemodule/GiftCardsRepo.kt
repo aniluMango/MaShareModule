@@ -7,7 +7,7 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 
-class GiftCardsRepo(private val configuration: DomainConfiguration) : BaseRepo(configuration) {
+class GiftCardsRepo(configuration: DomainConfiguration) : BaseRepo(configuration) {
 
 
     suspend fun getGiftCards():GiftCardResponse {
@@ -65,13 +65,20 @@ class GiftCardsRepo(private val configuration: DomainConfiguration) : BaseRepo(c
                 contentType(ContentType.Application.Json)
                 setBody("{\"ms_request\": {\"id\": \"$id\"}}")
             }
-            get.body() as PostRedemptionResponse
+            val postRedemptionResponse = get.body() as PostRedemptionResponse
+            if (postRedemptionResponse.ms_errors!=null) {
+                checkError(postRedemptionResponse.ms_errors)
+            }
+
+            postRedemptionResponse
 
         } catch (e: Exception) {
             e.printStackTrace()
             PostRedemptionResponse(ms_errors = MsErrors(Error("Internal server error"), false))
         }
     }
+
+
 }
 
 
